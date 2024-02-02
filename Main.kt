@@ -5,6 +5,10 @@ enum class Account{                                             //types of accou
 }//enum class account
 
 var accountBalance = 0                                          //used as the account balance
+var accountType = ""                                            //used for the type of bank account
+var money = 0                                                   //used for current deposit/withdraw amount
+var isSystemOpen = true                                         //used for keeping open/closing app
+var option = 0
 
 //deposits dollar amount into balance, and returns dollar amount deposited
 fun deposit(amount:Int):Int{
@@ -58,12 +62,41 @@ fun debitWithdraw(amount:Int):Int{
     }//else
 }//debitWithdraw
 
+//logic for deciding on whether to deposit/withdraw, given string, calls function, returns nothing
+fun transfer(mode:String){
+    val transferAmount:Int
+    when(mode){
+        Account.Debit.toString()-> {
+            transferAmount = if(accountType == Account.Debit.toString()){
+                debitWithdraw(money)
+            }//if
+            else{
+                withdraw(money)
+            }//else
+            println("The amount withdrawn is $${"%,.2f".format(transferAmount.toDouble())}!")
+        }//withdraw
+        Account.Credit.toString()-> {
+            transferAmount = if(accountType == Account.Credit.toString()){
+                creditDeposit(money)
+            }//if
+            else{
+                deposit(money)
+            }//else
+            println("The amount deposited is $${"%,.2f".format(transferAmount.toDouble())}!")
+        }//credit
+        else->{
+            return
+        }//else
+    }//when
+
+}//transfer
+
 fun main() {
-    var accountType = ""                                        //used for the type of bank account
+    //var accountType = ""                                      //used for the type of bank account
     var userChoice = 0                                          //used for which option user inputs
     //var accountBalance = 0                                    //used as the account balance
     var output = 0                                              //output for deposit/withdraw functions
-    var money = 0
+    //var money = 0
 
     println("Welcome to the bank system!")
     println("What type of account would you like to create?")
