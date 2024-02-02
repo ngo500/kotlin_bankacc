@@ -14,6 +14,27 @@ fun deposit(amount:Int):Int{
     return amount
 }//deposit
 
+fun creditDeposit(amount:Int):Int{
+    if(accountBalance == 0){                                    //no balance to pay
+        println("Error- Cannot pay balance of $0.00!")
+        return accountBalance
+    }//if
+    else if ((accountBalance+amount) > 0) {                     //balance to pay is less than deposit
+        println(
+            "Error- cannot deposit $${"%,.2f".format(amount.toDouble())} to account with balance $${
+                "%,.2f".format(accountBalance.toDouble())}!")
+        return 0
+    }//else if                                                  //balance to pay is exact amount of deposit, account paid off
+    else if(amount == -accountBalance){
+        accountBalance = 0
+        println("You have paid off this account.")
+        return amount
+    }//else if
+    else{                                                       //deposit can be made on account balance, call deposit
+        return deposit(amount)
+    }//else
+}//creditDeposit
+
 //takes dollar amount to withdraw from balance, and returns dollar amount withdrawn
 fun withdraw(amount:Int):Int{
     accountBalance -= amount                                    //take amount out of total balance
@@ -25,17 +46,15 @@ fun withdraw(amount:Int):Int{
 //checks if dollar amount can be withdrawn from account, returns dollar amount withdrawn
 fun debitWithdraw(amount:Int):Int{
     if(accountBalance == 0){                                    //no money in account
-        println("Error- cannot withdraw from debit account with balance $0.00.")
+        println("Error- Cannot withdraw from debit account with balance $0.00!")
         return accountBalance
     }//if
-    else{
-        if(amount > accountBalance){                            //money in account, but not enough
-            println("Error- cannot withdraw $${"%,.2f".format(amount.toDouble())} from debit account with balance $${"%,.2f".format(accountBalance.toDouble())}.")
-            return 0
-        }//if
-        else{
-            return withdraw(amount)                             //enough money, call withdraw
-        }//else
+    else if(amount > accountBalance){                           //money in account, but not enough
+        println("Error- Cannot withdraw $${"%,.2f".format(amount.toDouble())} from debit account with balance $${"%,.2f".format(accountBalance.toDouble())}!")
+        return 0
+    }//else if
+    else{                                                       //enough money, call withdraw
+        return withdraw(amount)
     }//else
 }//debitWithdraw
 
@@ -72,6 +91,9 @@ fun main() {
     money = (1..1000).random()                              //get initial balance
     deposit(money)
     println("The initial balance is $${"%,.2f".format(accountBalance.toDouble())}!")
+    accountBalance = -money
+    creditDeposit(money)
+    accountBalance = 1000
 
     money = (1..accountBalance).random()
     output = debitWithdraw(money)
