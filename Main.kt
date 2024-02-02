@@ -6,6 +6,14 @@ enum class Account{                                             //types of accou
 
 var accountBalance = 0                                          //used as the account balance
 
+//deposits dollar amount into balance, and returns dollar amount deposited
+fun deposit(amount:Int):Int{
+    accountBalance += amount                                    //add amount to total balance
+    println("You deposited $${"%,.2f".format(amount.toDouble())} to the account!")
+    println("The current account balance is $${"%,.2f".format(accountBalance.toDouble())}!")
+    return amount
+}//deposit
+
 //takes dollar amount to withdraw from balance, and returns dollar amount withdrawn
 fun withdraw(amount:Int):Int{
     accountBalance -= amount                                    //take amount out of total balance
@@ -14,18 +22,19 @@ fun withdraw(amount:Int):Int{
     return amount
 }//withdraw
 
+//checks if dollar amount can be withdrawn from account, returns dollar amount withdrawn
 fun debitWithdraw(amount:Int):Int{
-    if(accountBalance == 0){
+    if(accountBalance == 0){                                    //no money in account
         println("Error- cannot withdraw from debit account with balance $0.00.")
         return accountBalance
     }//if
     else{
-        if(amount > accountBalance){
+        if(amount > accountBalance){                            //money in account, but not enough
             println("Error- cannot withdraw $${"%,.2f".format(amount.toDouble())} from debit account with balance $${"%,.2f".format(accountBalance.toDouble())}.")
             return 0
         }//if
         else{
-            return withdraw(amount)
+            return withdraw(amount)                             //enough money, call withdraw
         }//else
     }//else
 }//debitWithdraw
@@ -60,7 +69,8 @@ fun main() {
     println("You have created a $accountType account!")           //correct input, account created
     println("Please make an initial deposit:")
     //accountBalance = readln().toDouble()                        //user input
-    accountBalance = (1..1000).random()                     //get initial balance
+    money = (1..1000).random()                              //get initial balance
+    deposit(money)
     println("The initial balance is $${"%,.2f".format(accountBalance.toDouble())}!")
 
     money = (1..accountBalance).random()
