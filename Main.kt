@@ -14,6 +14,22 @@ fun withdraw(amount:Int):Int{
     return amount
 }//withdraw
 
+fun debitWithdraw(amount:Int):Int{
+    if(accountBalance == 0){
+        println("Error- cannot withdraw from debit account with balance $0.00.")
+        return accountBalance
+    }//if
+    else{
+        if(amount > accountBalance){
+            println("Error- cannot withdraw $${"%,.2f".format(amount.toDouble())} from debit account with balance $${"%,.2f".format(accountBalance.toDouble())}.")
+            return 0
+        }//if
+        else{
+            return withdraw(amount)
+        }//else
+    }//else
+}//debitWithdraw
+
 fun main() {
     var accountType = ""                                        //used for the type of bank account
     var userChoice = 0                                          //used for which option user inputs
@@ -31,7 +47,7 @@ fun main() {
     while(accountType == ""){
         println("Please enter an option (1, 2, or 3):")         //get input to create account
         //userChoice = readln().toInt()                         //user input
-        userChoice = (1..5).random()                            //random input to simulate user input
+        userChoice = (1..5).random()                      //random input to simulate user input
         println("The selected option is $userChoice!")
         accountType = when(userChoice){
             1 -> Account.Debit.toString()                        //make a debit account
@@ -44,10 +60,10 @@ fun main() {
     println("You have created a $accountType account!")           //correct input, account created
     println("Please make an initial deposit:")
     //accountBalance = readln().toDouble()                        //user input
-    accountBalance = (1..1000).random()                           //get initial balance
+    accountBalance = (1..1000).random()                     //get initial balance
     println("The initial balance is $${"%,.2f".format(accountBalance.toDouble())}!")
 
     money = (1..accountBalance).random()
-    output = withdraw(money)
+    output = debitWithdraw(money)
     println("You have successfully withdrawn $${"%,.2f".format(output.toDouble())}!")
 }//main
